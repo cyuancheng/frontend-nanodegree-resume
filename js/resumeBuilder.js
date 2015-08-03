@@ -7,12 +7,12 @@ This is empty on purpose! Your code to build the resume will go here.
 //console.log(awesomeThoughts)
 //$("#main").append(funThoughts)
 
-//var name = "Chi-Yuan Cheng"
-//var role = "Data Scientist"
-//var formattedName = HTMLheaderName.replace("%data%", name);
-//var formattedRole = HTMLheaderRole.replace("%data%", role);
-//$("#header").prepend(formattedRole);
-//$("#header").prepend(formattedName);
+var name = "Chi-Yuan Cheng"
+var role = "Data Scientist"
+var formattedName = HTMLheaderName.replace("%data%", name);
+var formattedRole = HTMLheaderRole.replace("%data%", role);
+$("#header").prepend(formattedRole);
+$("#header").prepend(formattedName);
 //var email = "cyuancheng@gmail.com";
 //var newEmail =
 //    email.replace("gmail", "test");
@@ -22,18 +22,20 @@ This is empty on purpose! Your code to build the resume will go here.
 var bio = {
   name : "Chi-Yuan Cheng",
   role : "data scientist",
-  contact : {
+  contacts : {
     mobile : "805 570 1431",
     email : "cyuancheng@gmail.com",
     github : "cyuancheng",
     twitter : "@cyuancheng",
-    location : "Santa Barbara"
+    location : "Santa Barbara, CA"
     },
   welcome_message : "none",
   skills : ["data science", "machine learning",
   "data visualization", "statistical analysis"],
   picture_URL : "none"
 }
+
+
 
 var projects = {
     projects: [
@@ -63,14 +65,14 @@ var work = {
   {
     "title" : "Assistent Project Scientist",
     "employer" : "UC Santa Barbara",
-    "city" : "Santa Barbara, CA",
+    "location" : "Santa Barbara, CA",
     "dates" : "2013-current",
     "description" : " xxx "
   },
   {
     "title" : "Postdoctoral Scholar",
     "employer" : "UC Santa Barbara",
-    "city" : "Santa Barbara, CA",
+    "location" : "Santa Barbara, CA",
     "dates" : "2008-2013",
     "description" : " xxx "
   }
@@ -81,13 +83,13 @@ var education = {
     "school": [
         {
             "name": "University of Florida",
-            "city": "Gainesville, FL",
+            "location": "Gainesville, FL",
             "degree" : "Ph.D",
             "major": "physical chemistry"
         },
         {
             "name": "National Taiwan University",
-            "city": "Taipei, Taiwan",
+            "location": "Taipei, Taiwan",
             "degree" : "M.S.",
             "major": "Physical Chemistry"
         },
@@ -169,4 +171,52 @@ for ( job in work.jobs) {
 
     var formattedDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
     $(".work-entry:last").append(formattedDescription);
+}
+
+$(document).click(function(loc){
+  var x = loc.pageX;
+  var y = loc.pageY;
+  logClicks(x,y);
+});
+
+function locationizer(work_obj){
+  var locationArray = [];
+
+  for (job in work_obj.jobs){
+    var newLocation = work_obj.jobs[job].location;
+    locationArray.push(newLocation);
+  }
+  return locationArray;
+}
+
+//console.log(locationizer(work));
+
+function inName(name){
+  name = name.trim().split(" ");
+  console.log(name);
+  name[1] = name[1].toUpperCase();
+  name[0] = name[0].slice(0,1).toUpperCase()+
+        name[0].slice(1).toLowerCase();
+  return name[0]+" "+name[1];
+}
+//$('#main').append(internationalizeButton);
+$("#mapDiv").append(googleMap);
+projects.display = function(){
+    for(p in projects.projects){
+      $("#project").append(HTMLprojectStart);
+
+      var formattedTitle = HTMLprojectTitle.replace("%data%", projects.projects[p]).title;
+      $(".project-entry:last").append(formattedTitle);
+      var formattedDates = HTMLprojectDates.replace("%data%", projects.projects[p].dates);
+      $(".project-entry:last").append(formattedDates);
+      var formattedDescription = HTMLprojectDescription.replace("%data%", projects.projects[p].description);
+      $(".project-entry:last").append(formattedDescription);
+
+      if(projects.projects[p].images.length > 0 ){
+        for (image in projects.projects[p].images){
+          var formattedImage = HTMLprojectImage.replace("%data%", projects.projects[p].images[image]);
+          $(".project-entry:last").append(formattedImage);
+        }
+      }
+    }
 }
